@@ -3,7 +3,7 @@ export USE_CCACHE=1
 export CCACHE_DIR=/home/mustaavalkosta/storage/ccache-3.1.9
 export USER=mustaavalkosta
 
-RELEASE_NAME="BR1"
+RELEASE_NAME="BR2"
 
 SOURCE_ROOT=/home/mustaavalkosta/storage/cm11.0
 
