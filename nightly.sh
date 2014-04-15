@@ -61,3 +61,6 @@ else
 fi
 
 rsync -avvru -e ssh --delete --exclude '*.md5sum' $DOWNLOAD_DIR Mustaavalkosta@upload.goo.im:$REMOTE_DIR
+
+## Sync extras also
+rsync -avvru -e ssh --delete --exclude '*.md5sum' /home/mustaavalkosta/downloads/cm-11-unofficial-ace/extras/ Mustaavalkosta@upload.goo.im:/home/Mustaavalkosta/public_html/cm-11-unofficial-ace/extras/
