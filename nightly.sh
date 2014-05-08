@@ -24,7 +24,7 @@ then
     cp -v $SOURCE_ROOT/out/target/product/ace/cm-11-*-UNOFFICIAL-ace.zip* $DOWNLOAD_DIR
     make clean
     cd $DOWNLOAD_DIR
-    rm -v `ls -t $DOWNLOAD_DIR | awk 'NR>28'`
+    rm -v `ls -t $DOWNLOAD_DIR | awk 'NR>24'`
     cd $SOURCE_ROOT
 else
     echo "##############################################################"
@@ -51,7 +51,7 @@ then
     cp -v $SOURCE_ROOT/out/target/product/ace/cm-11-*-UNOFFICIAL-ODEXED-ace.zip* $DOWNLOAD_DIR 
     make clean
     cd $DOWNLOAD_DIR
-    rm -v `ls -t $DOWNLOAD_DIR | awk 'NR>28'`
+    rm -v `ls -t $DOWNLOAD_DIR | awk 'NR>24'`
     cd $SOURCE_ROOT
 else
     echo "##############################################################"
