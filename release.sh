@@ -5,7 +5,7 @@ export USER=mustaavalkosta
 
 RELEASE_NAME="BR4"
 
-SOURCE_ROOT=/home/mustaavalkosta/storage/cm11.0
+SOURCE_ROOT=/home/mustaavalkosta/storage/cm11.0_stable
 
 ## Regular release ##
 DOWNLOAD_DIR=/home/mustaavalkosta/downloads/cm-11-unofficial-ace/releases/
