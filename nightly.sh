@@ -3,7 +3,7 @@ export USE_CCACHE=1
 export CCACHE_DIR=/home/mustaavalkosta/storage/ccache-3.1.9
 export USER=mustaavalkosta
 
-SOURCE_ROOT=/home/mustaavalkosta/storage/cm11.0
+SOURCE_ROOT=/home/mustaavalkosta/storage/cm_nightly
 
 ## Regular nightly ##
 DOWNLOAD_DIR=/home/mustaavalkosta/downloads/cm-11-unofficial-ace/nightlies/
@@ -48,7 +48,7 @@ rsync -avvru -e ssh --delete --exclude '*.md5sum' $DOWNLOAD_DIR Mustaavalkosta@u
 #
 #if [ $? -eq 0 ]
 #then
-#    cp -v $SOURCE_ROOT/out/target/product/ace/cm-11-*-UNOFFICIAL-ODEXED-ace.zip* $DOWNLOAD_DIR 
+#    cp -v $SOURCE_ROOT/out/target/product/ace/cm-11-*-UNOFFICIAL-ODEXED-ace.zip* $DOWNLOAD_DIR
 #    make clean
 #    cd $DOWNLOAD_DIR
 #    rm -v `ls -t $DOWNLOAD_DIR | awk 'NR>24'`
