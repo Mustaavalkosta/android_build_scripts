@@ -3,7 +3,7 @@
 #export CCACHE_DIR=/home/mustaavalkosta/storage/ccache-3.1.9
 export USER=mustaavalkosta
 
-RELEASE_NAME="BR4"
+RELEASE_NAME="BR4+"
 
 SOURCE_ROOT=/home/mustaavalkosta/storage/cm11.0_stable
 
