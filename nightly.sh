@@ -33,7 +33,7 @@ else
     exit 0
 fi
 
-rsync -avvru -e ssh --delete --exclude '*.md5sum' $DOWNLOAD_DIR Mustaavalkosta@upload.goo.im:$REMOTE_DIR
+rsync -avvruO -e ssh --delete --exclude '*.md5sum' --exclude '.cm-11-*' $DOWNLOAD_DIR Mustaavalkosta@upload.goo.im:$REMOTE_DIR
 
 
 ## Odexed nightly ##
@@ -63,4 +63,4 @@ rsync -avvru -e ssh --delete --exclude '*.md5sum' $DOWNLOAD_DIR Mustaavalkosta@u
 #rsync -avvru -e ssh --delete --exclude '*.md5sum' $DOWNLOAD_DIR Mustaavalkosta@upload.goo.im:$REMOTE_DIR
 
 ## Sync extras also
-rsync -avvru -e ssh --delete --exclude '*.md5sum' /home/mustaavalkosta/downloads/cm-11-unofficial-ace/extras/ Mustaavalkosta@upload.goo.im:/home/Mustaavalkosta/public_html/cm-11-unofficial-ace/extras/
+rsync -avvruO -e ssh --delete --exclude '*.md5sum' /home/mustaavalkosta/downloads/cm-11-unofficial-ace/extras/ Mustaavalkosta@upload.goo.im:/home/Mustaavalkosta/public_html/cm-11-unofficial-ace/extras/
