@@ -11,7 +11,7 @@ REMOTE_DIR=/home/Mustaavalkosta/public_html/cm-11-unofficial-ace/nightlies/
 
 cd $SOURCE_ROOT
 make clean
-repo sync local_manifest # update manifest first to bring in manifest changes first
+repo sync local_manifest # update manifest to bring in manifest changes first
 repo sync -j8
 cd $SOURCE_ROOT/vendor/cm
 ./get-prebuilts
