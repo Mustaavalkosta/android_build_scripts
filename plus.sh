@@ -3,7 +3,7 @@
 #export CCACHE_DIR=/home/mustaavalkosta/storage/ccache-3.1.9
 export USER=mustaavalkosta
 
-RELEASE_NAME="M8.1Plus"
+RELEASE_NAME="M9Plus"
 
 SOURCE_ROOT=/home/mustaavalkosta/storage/cm_release
 
