@@ -36,5 +36,8 @@ fi
 
 rsync -avvruO -e ssh --delete --exclude '*.md5sum' --exclude '.cm-11-*' $DOWNLOAD_DIR Mustaavalkosta@upload.goo.im:$REMOTE_DIR
 
+# Basketbuild
+bash /home/mustaavalkosta/storage/build_scripts/basketbuild.sh
+
 ## Sync extras also
 rsync -avvruO -e ssh --delete --exclude '*.md5sum' /home/mustaavalkosta/downloads/cm-11-unofficial-ace/extras/ Mustaavalkosta@upload.goo.im:/home/Mustaavalkosta/public_html/cm-11-unofficial-ace/extras/
