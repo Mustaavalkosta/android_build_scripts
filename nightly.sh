@@ -34,10 +34,10 @@ mka bacon
 # Check for build fail
 if [ $? -eq 0 ]
 then
-    cp -v $SOURCE_ROOT/out/target/product/ace/cm-11-*-UNOFFICIAL-ace.zip* $DOWNLOAD_DIR
+    cp -v $SOURCE_ROOT/out/target/product/ace/cm-11-*-UNOFFICIAL-ace.zip* $LOCAL_DIR
     make clean
-    cd $DOWNLOAD_DIR
-    rm -v `ls -t $DOWNLOAD_DIR | awk 'NR>24'`
+    cd $LOCAL_DIR
+    rm -v `ls -t $LOCAL_DIR | awk 'NR>24'`
     cd $SOURCE_ROOT
 else
     echo "##############################################################"

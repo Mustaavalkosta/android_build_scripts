@@ -37,7 +37,7 @@ TARGET_UNOFFICIAL_BUILD_ID="$RELEASE_NAME" mka bacon
 # Check for build fail
 if [ $? -eq 0 ]
 then
-    cp -v $SOURCE_ROOT/out/target/product/ace/cm-11-*-UNOFFICIAL-$RELEASE_NAME-ace.zip* $DOWNLOAD_DIR
+    cp -v $SOURCE_ROOT/out/target/product/ace/cm-11-*-UNOFFICIAL-$RELEASE_NAME-ace.zip* $LOCAL_DIR
     make clean
     cd $SOURCE_ROOT
 else
