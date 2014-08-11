@@ -50,5 +50,5 @@ fi
 bash /home/mustaavalkosta/storage/build_scripts/basketbuild.sh
 
 # Sync with goo.im
-rsync -avvruO -e ssh --delete --exclude '*.md5sum' --exclude '.cm-11-*' $LOCAL_DIR Mustaavalkosta@upload.goo.im:$REMOTE_DIR
-rsync -avvruO -e ssh --delete --exclude '*.md5sum' $LOCAL_EXTRAS_DIR Mustaavalkosta@upload.goo.im:$REMOTE_EXTRAS_DIR
+rsync -avvruO -e ssh --delete --timeout=60 --exclude '*.md5sum' --exclude '.cm-11-*' $LOCAL_DIR Mustaavalkosta@upload.goo.im:$REMOTE_DIR
+rsync -avvruO -e ssh --delete --timeout=60 --exclude '*.md5sum' $LOCAL_EXTRAS_DIR Mustaavalkosta@upload.goo.im:$REMOTE_EXTRAS_DIR
