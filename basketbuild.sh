@@ -28,6 +28,8 @@ DELETE="--delete"
 # Run sync between codefi.re and BasketBuild using lftp
 lftp -c "set ftp:list-options -a;
 set ftp:passive-mode off;
+set net:reconnect-interval-base 5;
+set net:max-retries 2;
 open '$FTPURL';
 lcd $LOCAL_DIR;
 cd $REMOTE_DIR;
