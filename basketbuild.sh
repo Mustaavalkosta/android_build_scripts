@@ -30,6 +30,7 @@ lftp -c "set ftp:list-options -a;
 set ftp:passive-mode off;
 set net:reconnect-interval-base 5;
 set net:max-retries 2;
+set cmd:fail-exit true;
 open '$FTPURL';
 lcd $LOCAL_DIR;
 cd $REMOTE_DIR;
