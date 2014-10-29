@@ -2,6 +2,15 @@
 # FTP mirror script for BasketBuild.
 # Based on http://serverfault.com/questions/24622/how-to-use-rsync-over-ftp
 
+if [ -z "$1" ]
+then
+    echo "Usage: `basename $0` [device name]"
+    exit 0
+fi
+
+# Device
+DEVICE=$1
+
 # File format:
 # USERNAME:PASSWORD
 BASKET_PASSWD_FILE="/home/mustaavalkosta/storage/build_scripts/.basket_passwd"
@@ -17,10 +26,10 @@ PASS=`awk -F':' '{ print $2 }' $BASKET_PASSWD_FILE`
 FTPURL="ftp://$USER:$PASS@$HOST"
 
 # Local dir on codefi.re server
-LOCAL_DIR="/home/mustaavalkosta/downloads/cm-11-unofficial-ace"
+LOCAL_DIR="/home/mustaavalkosta/downloads/cm-11-unofficial-$DEVICE"
 
 # Remote dir on BasketBuild server
-REMOTE_DIR="/cm-11-unofficial-ace"
+REMOTE_DIR="/cm-11-unofficial-$DEVICE"
 
 # Uncomment this to delete old files
 DELETE="--delete"
