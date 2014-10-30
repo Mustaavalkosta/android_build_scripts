@@ -45,7 +45,7 @@ build()
     # Check for build fail
     if [ $? -eq 0 ]
     then
-        cp -v $SOURCE_ROOT/out/target/product/$DEVICE/cm-11-*-UNOFFICIAL-$DEVICE.zip* ~/ #$LOCAL_DIR
+        cp -v $SOURCE_ROOT/out/target/product/$DEVICE/cm-11-*-UNOFFICIAL-$DEVICE.zip* $LOCAL_DIR
         make clean
         cd $LOCAL_DIR
         rm -v `ls -t $LOCAL_DIR | awk 'NR>24'`
