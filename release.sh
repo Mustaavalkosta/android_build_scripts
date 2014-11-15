@@ -9,7 +9,7 @@
 export USER=mustaavalkosta
 
 # Release name
-RELEASE_NAME="M11"
+RELEASE_NAME="M12"
 
 # Android source tree root
 SOURCE_ROOT=/home/mustaavalkosta/storage/cm_release
