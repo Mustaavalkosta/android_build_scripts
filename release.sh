@@ -12,7 +12,13 @@ export USER=mustaavalkosta
 RELEASE_NAME="M12"
 
 # Android source tree root
-SOURCE_ROOT=/home/mustaavalkosta/storage/cm_release
+SOURCE_ROOT=/home/mustaavalkosta/storage/cm_nightly
+
+# CM version, eg. 11
+CM_VERSION=11
+
+# Base path for downloads
+LOCAL_BASE_DIR=/home/mustaavalkosta/downloads
 
 build()
 {
@@ -20,18 +26,7 @@ build()
     local DEVICE=$1
 
     # Local dirs on codefi.re server
-    local LOCAL_DIR=/home/mustaavalkosta/downloads/cm-11-unofficial-$DEVICE/releases/
-    if [ "$DEVICE" = "ace" ]
-    then
-        local LOCAL_EXTRAS_DIR=/home/mustaavalkosta/downloads/cm-11-unofficial-$DEVICE/extras/
-    fi
-
-    # Remote dirs on goo.im server
-    local REMOTE_DIR=/home/Mustaavalkosta/public_html/cm-11-unofficial-$DEVICE/releases/
-    if [ "$DEVICE" = "ace" ]
-    then
-        local REMOTE_EXTRAS_DIR=/home/Mustaavalkosta/public_html/cm-11-unofficial-$DEVICE/extras/
-    fi
+    local PROJECT_DIR=cm-$CM_VERSION-unofficial-$DEVICE/
 
     # Run build
     cd $SOURCE_ROOT
@@ -48,7 +43,7 @@ build()
     # Check for build fail
     if [ $? -eq 0 ]
     then
-        cp -v $SOURCE_ROOT/out/target/product/ace/cm-11-*-UNOFFICIAL-$RELEASE_NAME-ace.zip* $LOCAL_DIR
+        cp -v $SOURCE_ROOT/out/target/product/$DEVICE/cm-$CM_VERSION-*-UNOFFICIAL-$DEVICE.zip* $LOCAL_BASE_DIR/$PROJECT_DIR/releases/
         make clean
         cd $SOURCE_ROOT
     else
@@ -58,15 +53,17 @@ build()
         exit 0
     fi
 
-    # Basketbuild
-    bash /home/mustaavalkosta/storage/build_scripts/basketbuild.sh $DEVICE
-
-    # Sync with goo.im
-    rsync -avvruO -e ssh --delete --timeout=60 --exclude '*.md5sum' --exclude '.cm-11-*' $LOCAL_DIR Mustaavalkosta@upload.goo.im:$REMOTE_DIR
+    # Sync with beard.ovh
     if [ "$DEVICE" = "ace" ]
     then
-        rsync -avvruO -e ssh --delete --timeout=60 --exclude '*.md5sum' $LOCAL_EXTRAS_DIR Mustaavalkosta@upload.goo.im:$REMOTE_EXTRAS_DIR
+        rsync -avvruO -e ssh --delete --timeout=60 $LOCAL_BASE_DIR/$PROJECT_DIR mustaavalkosta@beard.ovh:~/downloads/$PROJECT_DIR
     fi
+
+    # Basketbuild
+    bash /home/mustaavalkosta/storage/build_scripts/basketbuild.sh $DEVICE $LOCAL_BASE_DIR/$PROJECT_DIR /$PROJECT_DIR
+
+    # Sync with goo.im
+    rsync -avvruO -e ssh --delete --timeout=60 --exclude '*.md5sum' --exclude '.cm-11-*' $LOCAL_BASE_DIR/$PROJECT_DIR Mustaavalkosta@upload.goo.im:~/public_html/$PROJECT_DIR
 }
 
 # Build ace
