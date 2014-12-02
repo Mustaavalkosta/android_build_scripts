@@ -1,21 +1,24 @@
 #!/bin/bash
-# Build script for nightly release
+# Build script for M release
 
 # ccache variables
-export USE_CCACHE=1
-export CCACHE_DIR=/home/mustaavalkosta/storage/ccache-3.1.9
+#export USE_CCACHE=1
+#export CCACHE_DIR=/home/mustaavalkosta/storage/ccache-3.1.9
 
-# Cron doesn't get this without exporting it here.
-export USER=mustaavalkosta
+if [ -z "$CM_VERSION" ]
+then
+    echo "CM_VERSION is not set."
+    exit 0
+fi
+
+if [ -z "$RELEASE_NAME" ]
+then
+    echo "RELEASE_NAME is not set."
+    exit 0
+fi
 
 # Android source tree root
 SOURCE_ROOT=/home/mustaavalkosta/storage/cm_nightly
-
-# CM version, eg. 11
-CM_VERSION=11
-
-# Base path for downloads
-LOCAL_BASE_DIR=/home/mustaavalkosta/downloads
 
 build()
 {
@@ -35,15 +38,13 @@ build()
     cd $SOURCE_ROOT
     source build/envsetup.sh
     lunch cm_$DEVICE-userdebug
-    mka bacon
+    TARGET_UNOFFICIAL_BUILD_ID="$RELEASE_NAME" mka bacon
 
     # Check for build fail
     if [ $? -eq 0 ]
     then
-        cp -v $SOURCE_ROOT/out/target/product/$DEVICE/cm-$CM_VERSION-*-UNOFFICIAL-$DEVICE.zip* $LOCAL_BASE_DIR/$PROJECT_DIR/nightlies/
+        cp -v $SOURCE_ROOT/out/target/product/$DEVICE/cm-$CM_VERSION-*-UNOFFICIAL-$DEVICE.zip* $LOCAL_BASE_DIR/$PROJECT_DIR/releases/
         make clean
-        cd $LOCAL_BASE_DIR/$PROJECT_DIR
-        rm -v `ls -t $LOCAL_BASE_DIR/$PROJECT_DIR | awk 'NR>24'`
         cd $SOURCE_ROOT
     else
         echo "##############################################################"
@@ -59,14 +60,8 @@ build()
     fi
 
     # Basketbuild
-    bash /home/mustaavalkosta/storage/build_scripts/basketbuild.sh $LOCAL_BASE_DIR/$PROJECT_DIR /$PROJECT_DIR
+    sync_basketbuild $LOCAL_BASE_DIR/$PROJECT_DIR /$PROJECT_DIR
 
     # Sync with goo.im
     rsync -avvruO -e ssh --delete --timeout=60 --exclude '*.md5sum' --exclude '.cm-11-*' $LOCAL_BASE_DIR/$PROJECT_DIR Mustaavalkosta@upload.goo.im:~/public_html/$PROJECT_DIR
 }
-
-# Build ace
-build "ace"
-
-# Build saga
-build "saga"

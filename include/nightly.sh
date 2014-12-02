@@ -1,27 +1,27 @@
 #!/bin/bash
-# Build script for M release
+# Build script for nightly release
 
 # ccache variables
-#export USE_CCACHE=1
-#export CCACHE_DIR=/home/mustaavalkosta/storage/ccache-3.1.9
+export USE_CCACHE=1
+export CCACHE_DIR=/home/mustaavalkosta/storage/ccache-3.1.9
 
-# Cron doesn't get this without exporting it here.
-export USER=mustaavalkosta
-
-# Release name
-RELEASE_NAME="M12"
+if [ -z "$CM_VERSION" ]
+then
+    echo "CM_VERSION not set."
+    exit 0
+fi
 
 # Android source tree root
-SOURCE_ROOT=/home/mustaavalkosta/storage/cm_nightly
-
-# CM version, eg. 11
-CM_VERSION=11
-
-# Base path for downloads
-LOCAL_BASE_DIR=/home/mustaavalkosta/downloads
+SOURCE_ROOT=/home/mustaavalkosta/storage/cm/$CM_VERSION/nightly
 
 build()
 {
+    if [ -z "$1" ]
+    then
+        echo "Insufficient parameters. Usage: $FUNCNAME [device]"
+        exit 0
+    fi
+
     # Device
     local DEVICE=$1
 
@@ -38,13 +38,15 @@ build()
     cd $SOURCE_ROOT
     source build/envsetup.sh
     lunch cm_$DEVICE-userdebug
-    TARGET_UNOFFICIAL_BUILD_ID="$RELEASE_NAME" mka bacon
+    mka bacon
 
     # Check for build fail
     if [ $? -eq 0 ]
     then
-        cp -v $SOURCE_ROOT/out/target/product/$DEVICE/cm-$CM_VERSION-*-UNOFFICIAL-$DEVICE.zip* $LOCAL_BASE_DIR/$PROJECT_DIR/releases/
+        cp -v $SOURCE_ROOT/out/target/product/$DEVICE/cm-$CM_VERSION-*-UNOFFICIAL-$DEVICE.zip* $LOCAL_BASE_DIR/$PROJECT_DIR/nightlies/
         make clean
+        cd $LOCAL_BASE_DIR/$PROJECT_DIR
+        rm -v `ls -t $LOCAL_BASE_DIR/$PROJECT_DIR | awk 'NR>24'`
         cd $SOURCE_ROOT
     else
         echo "##############################################################"
@@ -60,14 +62,8 @@ build()
     fi
 
     # Basketbuild
-    bash /home/mustaavalkosta/storage/build_scripts/basketbuild.sh $LOCAL_BASE_DIR/$PROJECT_DIR /$PROJECT_DIR
+    sync_basketbuild $LOCAL_BASE_DIR/$PROJECT_DIR /$PROJECT_DIR
 
     # Sync with goo.im
     rsync -avvruO -e ssh --delete --timeout=60 --exclude '*.md5sum' --exclude '.cm-11-*' $LOCAL_BASE_DIR/$PROJECT_DIR Mustaavalkosta@upload.goo.im:~/public_html/$PROJECT_DIR
 }
-
-# Build ace
-build "ace"
-
-# Build saga
-#build "saga"
