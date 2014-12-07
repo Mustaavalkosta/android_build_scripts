@@ -10,6 +10,12 @@ sync_basketbuild()
         exit 0
     fi
 
+    if [ ! -f "$BASKET_PASSWD_FILE" ]
+    then
+        echo "Basketbuild passwd file missing. ($BASKET_PASSWD_FILE)"
+        exit 0
+    fi
+
     # BasketBuild FTP address
     HOST="s.basketbuild.com"
 
