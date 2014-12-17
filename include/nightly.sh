@@ -45,7 +45,7 @@ build()
     then
         cp -v $SOURCE_ROOT/out/target/product/$DEVICE/cm-$CM_VERSION-*-UNOFFICIAL-$DEVICE.zip* $LOCAL_BASE_DIR/$PROJECT_DIR/nightlies/
         make clean
-        rm -v `find $LOCAL_BASE_DIR/$PROJECT_DIR/nightlies/ -type f | sort -r | awk 'NR>24'`
+        rm -v `find $LOCAL_BASE_DIR/$PROJECT_DIR/nightlies/ -maxdepth 1 -type f | sort -r | awk 'NR>24'`
     else
         echo "##############################################################"
         echo "##                        BUILD FAILED                      ##"
