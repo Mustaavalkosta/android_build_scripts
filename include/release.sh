@@ -30,7 +30,6 @@ build()
 
     # Run build
     cd $SOURCE_ROOT
-    make clean
     repo sync local_manifest # update manifest to bring in manifest changes first
     repo sync -j8
     cd $SOURCE_ROOT/vendor/cm
@@ -38,6 +37,7 @@ build()
     cd $SOURCE_ROOT
     source build/envsetup.sh
     lunch cm_$DEVICE-userdebug
+    make clean
     TARGET_UNOFFICIAL_BUILD_ID="$RELEASE_NAME" mka bacon
 
     # Check for build fail
