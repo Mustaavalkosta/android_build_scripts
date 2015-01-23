@@ -18,10 +18,16 @@ then
 fi
 
 # Android source tree root
-SOURCE_ROOT=/home/mustaavalkosta/storage/cm_nightly
+SOURCE_ROOT=/home/mustaavalkosta/storage/cm/$CM_VERSION/snapshot
 
 build()
 {
+    if [ -z "$1" ]
+    then
+        echo "Insufficient parameters. Usage: $FUNCNAME [device]"
+        exit 0
+    fi
+
     # Device
     local DEVICE=$1
 
@@ -32,9 +38,7 @@ build()
     cd $SOURCE_ROOT
     repo sync local_manifest # update manifest to bring in manifest changes first
     repo sync -j8
-    cd $SOURCE_ROOT/vendor/cm
-    ./get-prebuilts
-    cd $SOURCE_ROOT
+    CHANGELOG_TIMESTAMP=$(date +"%Y-%m-%d %H:%m")
     source build/envsetup.sh
     lunch cm_$DEVICE-userdebug
     make clean
@@ -43,9 +47,22 @@ build()
     # Check for build fail
     if [ $? -eq 0 ]
     then
-        cp -v $SOURCE_ROOT/out/target/product/$DEVICE/cm-$CM_VERSION-*-UNOFFICIAL-$DEVICE.zip* $LOCAL_BASE_DIR/$PROJECT_DIR/snapshots/
+        cp -v $SOURCE_ROOT/out/target/product/$DEVICE/cm-$CM_VERSION-*-UNOFFICIAL-$RELEASE_NAME-$DEVICE.zip* $LOCAL_BASE_DIR/$PROJECT_DIR/snapshots/
+
+        # Create rough changelog if possible
+        if [ -f $SCRIPT_DIR/timestamps/snapshot-$CM_VERSION-$DEVICE ]
+        then
+            SINCE=$(head -n 1 $SCRIPT_DIR/timestamps/snapshot-$CM_VERSION-$DEVICE)
+            echo -e "## Changes since $SINCE ##\n" > $LOCAL_BASE_DIR/$PROJECT_DIR/snapshots/changelogs/cm-$CM_VERSION-$(date -u +%Y%m%d)-UNOFFICIAL-$RELEASE_NAME-$DEVICE.changelog
+            repo forall -pvc '
+            git log --oneline --no-merges --after="'"$SINCE"'"
+            ' | cat >> $LOCAL_BASE_DIR/$PROJECT_DIR/snapshots/changelogs/cm-$CM_VERSION-$(date -u +%Y%m%d)-UNOFFICIAL-$RELEASE_NAME-$DEVICE.changelog
+        fi
+
+        # Save new timestamp
+        echo $CHANGELOG_TIMESTAMP > $SCRIPT_DIR/timestamps/snapshot-$CM_VERSION-$DEVICE
+
         make clean
-        cd $SOURCE_ROOT
     else
         echo "##############################################################"
         echo "##                        BUILD FAILED                      ##"

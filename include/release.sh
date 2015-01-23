@@ -18,10 +18,16 @@ then
 fi
 
 # Android source tree root
-SOURCE_ROOT=/home/mustaavalkosta/storage/cm_nightly
+SOURCE_ROOT=/home/mustaavalkosta/storage/cm/$CM_VERSION/release
 
 build()
 {
+    if [ -z "$1" ]
+    then
+        echo "Insufficient parameters. Usage: $FUNCNAME [device]"
+        exit 0
+    fi
+
     # Device
     local DEVICE=$1
 
@@ -43,9 +49,8 @@ build()
     # Check for build fail
     if [ $? -eq 0 ]
     then
-        cp -v $SOURCE_ROOT/out/target/product/$DEVICE/cm-$CM_VERSION-*-UNOFFICIAL-$DEVICE.zip* $LOCAL_BASE_DIR/$PROJECT_DIR/releases/
+        cp -v $SOURCE_ROOT/out/target/product/$DEVICE/cm-$CM_VERSION-*-UNOFFICIAL-$RELEASE_NAME-$DEVICE.zip* $LOCAL_BASE_DIR/$PROJECT_DIR/releases/
         make clean
-        cd $SOURCE_ROOT
     else
         echo "##############################################################"
         echo "##                        BUILD FAILED                      ##"

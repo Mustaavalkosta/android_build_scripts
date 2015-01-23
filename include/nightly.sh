@@ -32,9 +32,14 @@ build()
     cd $SOURCE_ROOT
     repo sync local_manifest # update manifest to bring in manifest changes first
     repo sync -j8
-    cd $SOURCE_ROOT/vendor/cm
-    ./get-prebuilts
-    cd $SOURCE_ROOT
+    CHANGELOG_TIMESTAMP=$(date +"%Y-%m-%d %H:%m")
+    # Run get-prebuilts only for CM11
+    if [ $CM_VERSION = "11" ]
+    then
+        cd $SOURCE_ROOT/vendor/cm
+        ./get-prebuilts
+        cd $SOURCE_ROOT
+    fi
     source build/envsetup.sh
     lunch cm_$DEVICE-userdebug
     make clean
@@ -44,8 +49,23 @@ build()
     if [ $? -eq 0 ]
     then
         cp -v $SOURCE_ROOT/out/target/product/$DEVICE/cm-$CM_VERSION-*-UNOFFICIAL-$DEVICE.zip* $LOCAL_BASE_DIR/$PROJECT_DIR/nightlies/
-        make clean
         rm -v `find $LOCAL_BASE_DIR/$PROJECT_DIR/nightlies/ -maxdepth 1 -type f | sort -r | awk 'NR>24'`
+
+        # Create rough changelog if possible
+        if [ -f $SCRIPT_DIR/timestamps/nightly-$CM_VERSION-$DEVICE ]
+        then
+            SINCE=$(head -n 1 $SCRIPT_DIR/timestamps/nightly-$CM_VERSION-$DEVICE)
+            echo -e "## Changes since $SINCE ##\n" > $LOCAL_BASE_DIR/$PROJECT_DIR/nightliess/changelogs/cm-$CM_VERSION-$(date -u +%Y%m%d)-UNOFFICIAL-$DEVICE.changelog
+            repo forall -pvc '
+            git log --oneline --no-merges --after="'"$SINCE"'"
+            ' | cat >> $LOCAL_BASE_DIR/$PROJECT_DIR/nightlies/changelogs/cm-$CM_VERSION-$(date -u +%Y%m%d)-UNOFFICIAL-$DEVICE.changelog
+            rm -v `find $LOCAL_BASE_DIR/$PROJECT_DIR/nightlies/changelogs/ -maxdepth 1 -type f | sort -r | awk 'NR>12'`
+        fi
+
+        # Save new timestamp
+        echo $CHANGELOG_TIMESTAMP > $SCRIPT_DIR/timestamps/nightly-$CM_VERSION-$DEVICE
+
+        make clean
     else
         echo "##############################################################"
         echo "##                        BUILD FAILED                      ##"
