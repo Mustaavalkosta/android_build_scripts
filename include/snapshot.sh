@@ -38,7 +38,7 @@ build()
     cd $SOURCE_ROOT
     repo sync local_manifest # update manifest to bring in manifest changes first
     repo sync -j8
-    CHANGELOG_TIMESTAMP=$(date +"%Y-%m-%d %H:%m")
+    CHANGELOG_TIMESTAMP=$(date +"%Y-%m-%d %R")
     source build/envsetup.sh
     lunch cm_$DEVICE-userdebug
     make clean
@@ -53,7 +53,7 @@ build()
         if [ -f $SCRIPT_DIR/timestamps/snapshot-$CM_VERSION-$DEVICE ]
         then
             SINCE=$(head -n 1 $SCRIPT_DIR/timestamps/snapshot-$CM_VERSION-$DEVICE)
-            echo -e "## Changes since $SINCE ##\n" > $LOCAL_BASE_DIR/$PROJECT_DIR/snapshots/changelogs/cm-$CM_VERSION-$(date -u +%Y%m%d)-UNOFFICIAL-$RELEASE_NAME-$DEVICE.changelog
+            echo -e "## Changes since $SINCE $(date +%Z) ##\n" > $LOCAL_BASE_DIR/$PROJECT_DIR/snapshots/changelogs/cm-$CM_VERSION-$(date -u +%Y%m%d)-UNOFFICIAL-$RELEASE_NAME-$DEVICE.changelog
             repo forall -pvc '
             git log --oneline --no-merges --after="'"$SINCE"'"
             ' | cat >> $LOCAL_BASE_DIR/$PROJECT_DIR/snapshots/changelogs/cm-$CM_VERSION-$(date -u +%Y%m%d)-UNOFFICIAL-$RELEASE_NAME-$DEVICE.changelog
