@@ -34,7 +34,7 @@ build()
     repo sync -j8
     CHANGELOG_TIMESTAMP=$(date +"%Y-%m-%d %R")
     # Run get-prebuilts only for CM11
-    if [ $CM_VERSION = "11" ]
+    if [ "$CM_VERSION" == "11" ]
     then
         cd $SOURCE_ROOT/vendor/cm
         ./get-prebuilts
