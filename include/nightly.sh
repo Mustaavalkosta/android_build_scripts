@@ -55,7 +55,7 @@ build()
         if [ -f $SCRIPT_DIR/timestamps/nightly-$CM_VERSION-$DEVICE ]
         then
             SINCE=$(head -n 1 $SCRIPT_DIR/timestamps/nightly-$CM_VERSION-$DEVICE)
-            echo -e "## Changes since $SINCE ##\n" > $LOCAL_BASE_DIR/$PROJECT_DIR/nightliess/changelogs/cm-$CM_VERSION-$(date -u +%Y%m%d)-UNOFFICIAL-$DEVICE.changelog
+            echo -e "## Changes since $SINCE ##\n" > $LOCAL_BASE_DIR/$PROJECT_DIR/nightlies/changelogs/cm-$CM_VERSION-$(date -u +%Y%m%d)-UNOFFICIAL-$DEVICE.changelog
             repo forall -pvc '
             git log --oneline --no-merges --after="'"$SINCE"'"
             ' | cat >> $LOCAL_BASE_DIR/$PROJECT_DIR/nightlies/changelogs/cm-$CM_VERSION-$(date -u +%Y%m%d)-UNOFFICIAL-$DEVICE.changelog
