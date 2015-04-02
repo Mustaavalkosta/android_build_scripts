@@ -26,7 +26,7 @@ build()
     local DEVICE=$1
 
     # Local dirs on codefi.re server
-    local PROJECT_DIR=cm-$CM_VERSION-unofficial-$DEVICE/
+    local PROJECT_DIR=cm-$(echo $CM_VERSION |tr . -)-unofficial-$DEVICE/
 
     # Run build
     cd $SOURCE_ROOT
