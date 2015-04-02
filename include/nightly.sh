@@ -49,7 +49,12 @@ build()
     if [ $? -eq 0 ]
     then
         cp -v $SOURCE_ROOT/out/target/product/$DEVICE/cm-$CM_VERSION-*-UNOFFICIAL-$DEVICE.zip* $LOCAL_BASE_DIR/$PROJECT_DIR/nightlies/
-        rm -v `find $LOCAL_BASE_DIR/$PROJECT_DIR/nightlies/ -maxdepth 1 -type f | sort -r | awk 'NR>24'`
+        if [ "$CM_VERSION" == "12.1" ]
+        then
+            rm -v `find $LOCAL_BASE_DIR/$PROJECT_DIR/nightlies/ -maxdepth 1 -type f | sort -r | awk 'NR>24'`
+        else
+            rm -v `find $LOCAL_BASE_DIR/$PROJECT_DIR/nightlies/ -maxdepth 1 -type f | sort -r | awk 'NR>14'`
+        fi
 
         # Create rough changelog if possible
         if [ -f $SCRIPT_DIR/timestamps/nightly-$CM_VERSION-$DEVICE ]
