@@ -64,7 +64,12 @@ build()
             repo forall -pvc '
             git log --oneline --no-merges --after="'"$SINCE"'"
             ' | cat >> $LOCAL_BASE_DIR/$PROJECT_DIR/nightlies/changelogs/cm-$CM_VERSION-$(date -u +%Y%m%d)-UNOFFICIAL-$DEVICE.changelog
-            rm -v `find $LOCAL_BASE_DIR/$PROJECT_DIR/nightlies/changelogs/ -maxdepth 1 -type f | sort -r | awk 'NR>12'`
+            if [ "$CM_VERSION" == "12.1" ]
+            then
+                rm -v `find $LOCAL_BASE_DIR/$PROJECT_DIR/nightlies/changelogs/ -maxdepth 1 -type f | sort -r | awk 'NR>12'`
+            else
+                rm -v `find $LOCAL_BASE_DIR/$PROJECT_DIR/nightlies/changelogs/ -maxdepth 1 -type f | sort -r | awk 'NR>7'`
+            fi
         fi
 
         # Save new timestamp
