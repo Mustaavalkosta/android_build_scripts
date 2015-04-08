@@ -87,6 +87,7 @@ build()
     if [ "$DEVICE" = "ace" ]
     then
         rsync -avvruO -e ssh --delete --timeout=60 $LOCAL_BASE_DIR/$PROJECT_DIR mustaavalkosta@opendesireproject.org:~/downloads/$PROJECT_DIR
+        ssh mustaavalkosta@opendesireproject.org 'cd ~/ota-scanner/ && python scanner.py'
     fi
 
     # Basketbuild
