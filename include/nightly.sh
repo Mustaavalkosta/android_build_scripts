@@ -26,7 +26,7 @@ build()
     local DEVICE=$1
 
     # Local dirs on codefi.re server
-    local PROJECT_DIR=cm-$(echo $CM_VERSION |tr . -)-unofficial-$DEVICE/
+    local PROJECT_DIR=cm-$(echo $CM_VERSION |tr . -)-unofficial-$DEVICE
 
     # Run build
     cd $SOURCE_ROOT
@@ -86,13 +86,13 @@ build()
     # Sync with opendesireproject.org
     if [ "$DEVICE" = "ace" ] && [ "$CM_VERSION" != "11" ]
     then
-        rsync -avvruO -e ssh --delete --timeout=60 $LOCAL_BASE_DIR/$PROJECT_DIR mustaavalkosta@opendesireproject.org:~/downloads/$PROJECT_DIR
+        rsync -avvruO -e ssh --delete --timeout=60 $LOCAL_BASE_DIR/$PROJECT_DIR mustaavalkosta@opendesireproject.org:~/dl.opendesireproject.org/www/
         ssh mustaavalkosta@opendesireproject.org 'cd ~/ota-scanner/ && python scanner.py'
     fi
 
     # Basketbuild
-    sync_basketbuild $LOCAL_BASE_DIR/$PROJECT_DIR /$PROJECT_DIR
+    sync_basketbuild $LOCAL_BASE_DIR/$PROJECT_DIR/ /$PROJECT_DIR
 
     # Sync with goo.im
-    rsync -avvruO -e ssh --delete --timeout=60 --exclude '*.md5sum' --exclude '.cm-11-*' $LOCAL_BASE_DIR/$PROJECT_DIR Mustaavalkosta@upload.goo.im:~/public_html/$PROJECT_DIR
+    rsync -avvruO -e ssh --delete --timeout=60 --exclude '*.md5sum' --exclude '.cm-11-*' $LOCAL_BASE_DIR/$PROJECT_DIR Mustaavalkosta@upload.goo.im:~/public_html/
 }
