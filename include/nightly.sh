@@ -49,12 +49,7 @@ build()
     if [ $? -eq 0 ]
     then
         cp -v $SOURCE_ROOT/out/target/product/$DEVICE/cm-$CM_VERSION-*-UNOFFICIAL-$DEVICE.zip* $LOCAL_BASE_DIR/$PROJECT_DIR/nightlies/
-        if [ "$CM_VERSION" == "12.1" ]
-        then
-            rm -v `find $LOCAL_BASE_DIR/$PROJECT_DIR/nightlies/ -maxdepth 1 -type f | sort -r | awk 'NR>24'`
-        else
-            rm -v `find $LOCAL_BASE_DIR/$PROJECT_DIR/nightlies/ -maxdepth 1 -type f | sort -r | awk 'NR>14'`
-        fi
+        rm -v `find $LOCAL_BASE_DIR/$PROJECT_DIR/nightlies/ -maxdepth 1 -type f | sort -r | awk 'NR>14'`
 
         # Create rough changelog if possible
         if [ -f $SCRIPT_DIR/timestamps/nightly-$CM_VERSION-$DEVICE ]
@@ -64,12 +59,7 @@ build()
             repo forall -pvc '
             git log --oneline --no-merges --after="'"$SINCE"'"
             ' | cat >> $LOCAL_BASE_DIR/$PROJECT_DIR/nightlies/changelogs/cm-$CM_VERSION-$(date -u +%Y%m%d)-UNOFFICIAL-$DEVICE.changelog
-            if [ "$CM_VERSION" == "12.1" ]
-            then
-                rm -v `find $LOCAL_BASE_DIR/$PROJECT_DIR/nightlies/changelogs/ -maxdepth 1 -type f | sort -r | awk 'NR>12'`
-            else
-                rm -v `find $LOCAL_BASE_DIR/$PROJECT_DIR/nightlies/changelogs/ -maxdepth 1 -type f | sort -r | awk 'NR>7'`
-            fi
+            rm -v `find $LOCAL_BASE_DIR/$PROJECT_DIR/nightlies/changelogs/ -maxdepth 1 -type f | sort -r | awk 'NR>7'`
         fi
 
         # Save new timestamp
