@@ -28,6 +28,7 @@ LOCAL_BASE_DIR=/home/mustaavalkosta/downloads
 BASKET_PASSWD_FILE="$SCRIPT_DIR/.basket_passwd"
 
 source "$SCRIPT_DIR/include/basketbuild.sh"
+source "$SCRIPT_DIR/include/changelog.sh"
 
 if [ "$1" == "nightly" ]
 then

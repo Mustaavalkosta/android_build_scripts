@@ -28,6 +28,7 @@ LOCAL_BASE_DIR=/home/mustaavalkosta/downloads
 BASKET_PASSWD_FILE="$SCRIPT_DIR/.basket_passwd"
 
 source "$SCRIPT_DIR/include/basketbuild.sh"
+source "$SCRIPT_DIR/include/changelog.sh"
 
 if [ "$1" == "nightly" ]
 then
@@ -38,7 +39,7 @@ elif [ "$1" == "snapshot" ]
 then
     source "$SCRIPT_DIR/include/snapshot.sh"
     build "ace"
-    #build "saga"
+    build "saga"
 else
     echo "Invalid release type"
     exit 0

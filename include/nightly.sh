@@ -32,7 +32,7 @@ build()
     cd $SOURCE_ROOT
     repo sync local_manifest # update manifest to bring in manifest changes first
     repo sync -j8
-    CHANGELOG_TIMESTAMP=$(date +"%Y-%m-%d %R")
+    REVISION_TIMESTAMP=$(date +"%Y-%m-%d %R %Z")
     # Run get-prebuilts only for CM11
     if [ "$CM_VERSION" == "11" ]
     then
@@ -49,21 +49,24 @@ build()
     if [ $? -eq 0 ]
     then
         cp -v $SOURCE_ROOT/out/target/product/$DEVICE/cm-$CM_VERSION-*-UNOFFICIAL-$DEVICE.zip* $LOCAL_BASE_DIR/$PROJECT_DIR/nightlies/
-        rm -v `find $LOCAL_BASE_DIR/$PROJECT_DIR/nightlies/ -maxdepth 1 -type f | sort -r | awk 'NR>14'`
 
-        # Create rough changelog if possible
-        if [ -f $SCRIPT_DIR/timestamps/nightly-$CM_VERSION-$DEVICE ]
+        ZIPNAME=`find $SOURCE_ROOT/out/target/product/$DEVICE/cm-$CM_VERSION-*-UNOFFICIAL-$DEVICE.zip -exec basename {} .zip \;`
+
+        if [ -d "$LOCAL_BASE_DIR/$PROJECT_DIR/nightlies/revisions/" ]
         then
-            SINCE=$(head -n 1 $SCRIPT_DIR/timestamps/nightly-$CM_VERSION-$DEVICE)
-            echo -e "## Changes since $SINCE $(date +%Z) ##\n" > $LOCAL_BASE_DIR/$PROJECT_DIR/nightlies/changelogs/cm-$CM_VERSION-$(date -u +%Y%m%d)-UNOFFICIAL-$DEVICE.changelog
-            repo forall -pvc '
-            git log --oneline --no-merges --after="'"$SINCE"'"
-            ' | cat >> $LOCAL_BASE_DIR/$PROJECT_DIR/nightlies/changelogs/cm-$CM_VERSION-$(date -u +%Y%m%d)-UNOFFICIAL-$DEVICE.changelog
-            rm -v `find $LOCAL_BASE_DIR/$PROJECT_DIR/nightlies/changelogs/ -maxdepth 1 -type f | sort -r | awk 'NR>7'`
+            LAST_REVISIONS=`find $LOCAL_BASE_DIR/$PROJECT_DIR/nightlies/revisions/ -maxdepth 1 -type f | sort | tail -n 1`
+            if [ ! -z "$LAST_REVISIONS" ]
+            then
+                NEW_REVISIONS=$LOCAL_BASE_DIR/$PROJECT_DIR/nightlies/revisions/$ZIPNAME.txt
+                CHANGELOG=$LOCAL_BASE_DIR/$PROJECT_DIR/nightlies/changelogs/$ZIPNAME.changelog
+                generate_changelog $LAST_REVISIONS $NEW_REVISIONS $CHANGELOG $REVISION_TIMESTAMP
+            fi
         fi
 
-        # Save new timestamp
-        echo $CHANGELOG_TIMESTAMP > $SCRIPT_DIR/timestamps/nightly-$CM_VERSION-$DEVICE
+        # Clean up
+        rm -v `find $LOCAL_BASE_DIR/$PROJECT_DIR/nightlies/ -maxdepth 1 -type f | sort -r | awk 'NR>14'`
+        rm -v `find $LOCAL_BASE_DIR/$PROJECT_DIR/nightlies/changelogs/ -maxdepth 1 -type f | sort -r | awk 'NR>7'`
+        rm -v `find $LOCAL_BASE_DIR/$PROJECT_DIR/nightlies/revisions/ -maxdepth 1 -type f | sort -r | awk 'NR>7'`
 
         make clean
     else

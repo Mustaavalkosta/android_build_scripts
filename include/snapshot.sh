@@ -38,7 +38,7 @@ build()
     cd $SOURCE_ROOT
     repo sync local_manifest # update manifest to bring in manifest changes first
     repo sync -j8
-    CHANGELOG_TIMESTAMP=$(date +"%Y-%m-%d %R")
+    REVISION_TIMESTAMP=$(date +"%Y-%m-%d %R %Z")
     source build/envsetup.sh
     lunch cm_$DEVICE-userdebug
     make clean
@@ -49,18 +49,18 @@ build()
     then
         cp -v $SOURCE_ROOT/out/target/product/$DEVICE/cm-$CM_VERSION-*-UNOFFICIAL-$RELEASE_NAME-$DEVICE.zip* $LOCAL_BASE_DIR/$PROJECT_DIR/snapshots/
 
-        # Create rough changelog if possible
-        if [ -f $SCRIPT_DIR/timestamps/snapshot-$CM_VERSION-$DEVICE ]
-        then
-            SINCE=$(head -n 1 $SCRIPT_DIR/timestamps/snapshot-$CM_VERSION-$DEVICE)
-            echo -e "## Changes since $SINCE $(date +%Z) ##\n" > $LOCAL_BASE_DIR/$PROJECT_DIR/snapshots/changelogs/cm-$CM_VERSION-$(date -u +%Y%m%d)-UNOFFICIAL-$RELEASE_NAME-$DEVICE.changelog
-            repo forall -pvc '
-            git log --oneline --no-merges --after="'"$SINCE"'"
-            ' | cat >> $LOCAL_BASE_DIR/$PROJECT_DIR/snapshots/changelogs/cm-$CM_VERSION-$(date -u +%Y%m%d)-UNOFFICIAL-$RELEASE_NAME-$DEVICE.changelog
-        fi
+        ZIPNAME=`find $SOURCE_ROOT/out/target/product/$DEVICE/cm-$CM_VERSION-*-UNOFFICIAL-$RELEASE_NAME-$DEVICE.zip -exec basename {} .zip \;`
 
-        # Save new timestamp
-        echo $CHANGELOG_TIMESTAMP > $SCRIPT_DIR/timestamps/snapshot-$CM_VERSION-$DEVICE
+        if [ -d "$LOCAL_BASE_DIR/$PROJECT_DIR/snapshots/revisions/" ]
+        then
+            LAST_REVISIONS=`find $LOCAL_BASE_DIR/$PROJECT_DIR/nightlies/revisions/ -maxdepth 1 -type f | sort | tail -n 1`
+            if [ ! -z "$LAST_REVISIONS" ]
+            then
+                NEW_REVISIONS=$LOCAL_BASE_DIR/$PROJECT_DIR/snapshots/revisions/$ZIPNAME.txt
+                CHANGELOG=$LOCAL_BASE_DIR/$PROJECT_DIR/snapshots/changelogs/$ZIPNAME.changelog
+                generate_changelog $LAST_REVISIONS $NEW_REVISIONS $CHANGELOG $REVISION_TIMESTAMP
+            fi
+        fi
 
         make clean
     else
