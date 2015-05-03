@@ -32,7 +32,7 @@ build()
     cd $SOURCE_ROOT
     repo sync local_manifest # update manifest to bring in manifest changes first
     repo sync -j8
-    REVISION_TIMESTAMP=$(date +"%Y-%m-%d %R %Z")
+    REVISION_TIMESTAMP=$(date -u +"%Y-%m-%d %R %Z")
     # Run get-prebuilts only for CM11
     if [ "$CM_VERSION" == "11" ]
     then

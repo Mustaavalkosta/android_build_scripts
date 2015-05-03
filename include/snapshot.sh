@@ -38,7 +38,7 @@ build()
     cd $SOURCE_ROOT
     repo sync local_manifest # update manifest to bring in manifest changes first
     repo sync -j8
-    REVISION_TIMESTAMP=$(date +"%Y-%m-%d %R %Z")
+    REVISION_TIMESTAMP=$(date -u +"%Y-%m-%d %R %Z")
     source build/envsetup.sh
     lunch cm_$DEVICE-userdebug
     make clean
