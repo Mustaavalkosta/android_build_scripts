@@ -14,7 +14,7 @@ generate_changelog()
     CHANGELOG=$3
 
     # Save new revision timestamp
-    echo $4 > $TO
+    echo "$4" > $TO
 
     # Start with header
     echo -e "## Changes since $(head -n 1 $FROM) ##\n" > $CHANGELOG
