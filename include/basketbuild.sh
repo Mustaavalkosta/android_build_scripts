@@ -20,17 +20,17 @@ sync_basketbuild()
     HOST="s.basketbuild.com"
 
     # Login information
-    USER=`awk -F':' '{ print $1 }' $BASKET_PASSWD_FILE`
-    PASS=`awk -F':' '{ print $2 }' $BASKET_PASSWD_FILE`
+    USER=`awk -F':' '{ print $1 }' "$BASKET_PASSWD_FILE"`
+    PASS=`awk -F':' '{ print $2 }' "$BASKET_PASSWD_FILE"`
 
     # Full URL for FTP connection
     FTPURL="ftp://$USER:$PASS@$HOST"
 
     # Local dir on codefi.re server
-    LOCAL_DIR=$1
+    LOCAL_DIR="$1"
 
     # Remote dir on BasketBuild server
-    REMOTE_DIR=$2
+    REMOTE_DIR="$2"
 
     # Uncomment this to delete old files
     DELETE="--delete"
