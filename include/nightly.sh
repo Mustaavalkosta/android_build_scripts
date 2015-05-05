@@ -77,11 +77,8 @@ build()
     fi
 
     # Sync with opendesireproject.org
-    if ([ "$DEVICE" = "ace" ] || ([ "$DEVICE" = "saga" ] && [ "$CM_VERSION" = "12.1" ])) && [ "$CM_VERSION" != "11" ]
-    then
-        rsync -avvruO -e ssh --delete --timeout=60 "$LOCAL_BASE_DIR/$PROJECT_DIR" "mustaavalkosta@opendesireproject.org:~/dl.opendesireproject.org/www/"
-        ssh mustaavalkosta@opendesireproject.org 'cd ~/ota-scanner/ && python scanner.py'
-    fi
+    rsync -avvruO -e ssh --delete --timeout=60 "$LOCAL_BASE_DIR/$PROJECT_DIR" "mustaavalkosta@opendesireproject.org:~/dl.opendesireproject.org/www/"
+    ssh mustaavalkosta@opendesireproject.org 'cd ~/ota-scanner/ && python scanner.py'
 
     # Basketbuild
     sync_basketbuild "$LOCAL_BASE_DIR/$PROJECT_DIR/" "/$PROJECT_DIR"
