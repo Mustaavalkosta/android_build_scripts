@@ -47,7 +47,7 @@ build()
     # Check for build fail
     if [ $? -eq 0 ]
     then
-        cp -v "$SOURCE_ROOT/out/target/product/$DEVICE/cm-$CM_VERSION-*-UNOFFICIAL-$RELEASE_NAME-$DEVICE.zip*" "$LOCAL_BASE_DIR/$PROJECT_DIR/snapshots/"
+        cp -v "$SOURCE_ROOT"/out/target/product/$DEVICE/cm-$CM_VERSION-*-UNOFFICIAL-$RELEASE_NAME-$DEVICE.zip* "$LOCAL_BASE_DIR/$PROJECT_DIR/snapshots/"
 
         ZIPNAME=`find $SOURCE_ROOT/out/target/product/$DEVICE/cm-$CM_VERSION-*-UNOFFICIAL-$RELEASE_NAME-$DEVICE.zip -exec basename {} .zip \;`
 
