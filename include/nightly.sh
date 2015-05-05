@@ -1,15 +1,15 @@
 #!/bin/bash
 # Build script for nightly release
 
-# ccache variables
-export USE_CCACHE=1
-export CCACHE_DIR=/home/mustaavalkosta/storage/ccache-3.1.9
-
 if [ -z "$CM_VERSION" ]
 then
     echo "CM_VERSION not set."
     exit 0
 fi
+
+# ccache variables
+export USE_CCACHE=1
+export CCACHE_DIR=/home/mustaavalkosta/storage/ccache/$CM_VERSION
 
 # Android source tree root
 SOURCE_ROOT=/home/mustaavalkosta/storage/cm/$CM_VERSION/nightly
