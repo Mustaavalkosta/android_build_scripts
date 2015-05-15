@@ -21,7 +21,7 @@ generate_changelog()
 
     repo forall -pc '
         echo $REPO_PATH:$REPO_LREV >> '"$TO"'
-        PREV_REV=`grep "$REPO_PATH:" '"$FROM"' |cut -d ":" -f2`
+        PREV_REV=`grep "^$REPO_PATH:" '"$FROM"' |cut -d ":" -f2`
         if git rev-parse $PREV_REV >/dev/null 2>&1
         then
             git log --oneline --no-merges $PREV_REV..HEAD
