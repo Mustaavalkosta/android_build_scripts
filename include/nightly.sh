@@ -40,12 +40,6 @@ build()
         ./get-prebuilts
         cd "$SOURCE_ROOT"
     fi
-    if [ "$CM_VERSION" == "12" ] || [ "$CM_VERSION" == "12.1" ]
-    then
-        cd "$SOURCE_ROOT/frameworks/base"
-        git apply $SCRIPT_DIR/patches/increase-watchdog-default-timeout-to-3mins.patch
-        cd "$SOURCE_ROOT"
-    fi
     source build/envsetup.sh
     lunch cm_$DEVICE-userdebug
     make clean
@@ -80,13 +74,6 @@ build()
         echo "##                        BUILD FAILED                      ##"
         echo "##############################################################"
         exit 0
-    fi
-
-    if [ "$CM_VERSION" == "12" ] || [ "$CM_VERSION" == "12.1" ]
-    then
-        cd "$SOURCE_ROOT/frameworks/base"
-        git reset --hard
-        cd "$SOURCE_ROOT"
     fi
 
     # Sync with opendesireproject.org
