@@ -82,7 +82,4 @@ build()
 
     # Basketbuild
     sync_basketbuild "$LOCAL_BASE_DIR/$PROJECT_DIR/" "/$PROJECT_DIR"
-
-    # Sync with goo.im
-    rsync -avvruO -e ssh --delete --timeout=60 --exclude '*.md5sum' --exclude '.cm-11-*' "$LOCAL_BASE_DIR/$PROJECT_DIR" "Mustaavalkosta@upload.goo.im:~/public_html/"
 }
