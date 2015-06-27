@@ -61,7 +61,7 @@ build()
     # Sync with opendesireproject.org
     if [ "$DEVICE" = "ace" ] && [ "$CM_VERSION" != "11" ]
     then
-        rsync -avvruO -e ssh --delete --timeout=60 $LOCAL_BASE_DIR/$PROJECT_DIR mustaavalkosta@opendesireproject.org:~/dl.opendesireproject.org/www/
+        rsync -avvruO -e ssh --delete --timeout=300 $LOCAL_BASE_DIR/$PROJECT_DIR mustaavalkosta@opendesireproject.org:~/dl.opendesireproject.org/www/
     fi
 
     # Basketbuild
