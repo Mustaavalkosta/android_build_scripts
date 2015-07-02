@@ -3,7 +3,7 @@
 
 if [ -z "$1" ]
 then
-    echo "Insufficient parameters. Usage: `basename $0` [nightly|release]"
+    echo "Insufficient parameters. Usage: `basename $0` [nightly|snapshot]"
     exit 0
 fi
 
@@ -17,7 +17,7 @@ export USER=mustaavalkosta
 CM_VERSION=11
 
 # Release name for release build
-RELEASE_NAME="M12"
+RELEASE_NAME="XNG3C"
 
 # Base path for downloads
 LOCAL_BASE_DIR=/home/mustaavalkosta/downloads
@@ -35,11 +35,11 @@ then
     source "$SCRIPT_DIR/include/nightly.sh"
     build "ace"
     build "saga"
-elif [ "$1" == "release" ]
+elif [ "$1" == "snapshot" ]
 then
-    source "$SCRIPT_DIR/include/release.sh"
+    source "$SCRIPT_DIR/include/snapshot.sh"
     build "ace"
-    #build "saga"
+    build "saga"
 else
     echo "Invalid release type"
     exit 0
