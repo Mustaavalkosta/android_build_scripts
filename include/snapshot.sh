@@ -53,7 +53,7 @@ build()
 
         if [ -d "$LOCAL_BASE_DIR/$PROJECT_DIR/snapshots/revisions/" ]
         then
-            LAST_REVISIONS=`find $LOCAL_BASE_DIR/$PROJECT_DIR/nightlies/revisions/ -maxdepth 1 -type f | sort | tail -n 1`
+            LAST_REVISIONS=`find $LOCAL_BASE_DIR/$PROJECT_DIR/snapshots/revisions/ -maxdepth 1 -type f | sort | tail -n 1`
             if [ ! -z "$LAST_REVISIONS" ]
             then
                 NEW_REVISIONS="$LOCAL_BASE_DIR/$PROJECT_DIR/snapshots/revisions/$ZIPNAME.txt"
