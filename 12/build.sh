@@ -17,7 +17,7 @@ export USER=mustaavalkosta
 CM_VERSION=12
 
 # Release name for release build
-RELEASE_NAME="M1"
+RELEASE_NAME="YNG4N"
 
 # Base path for downloads
 LOCAL_BASE_DIR=/home/mustaavalkosta/downloads
