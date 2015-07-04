@@ -8,8 +8,8 @@ then
 fi
 
 # ccache variables
-export USE_CCACHE=1
-export CCACHE_DIR=/home/mustaavalkosta/storage/ccache/$CM_VERSION
+#export USE_CCACHE=1
+#export CCACHE_DIR=/home/mustaavalkosta/storage/ccache/$CM_VERSION
 
 # Android source tree root
 SOURCE_ROOT=/home/mustaavalkosta/storage/cm/$CM_VERSION/nightly
