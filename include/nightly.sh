@@ -77,7 +77,7 @@ build()
     fi
 
     # Sync with opendesireproject.org
-    rsync -avvruO -e ssh --delete --timeout=300 "$LOCAL_BASE_DIR/$PROJECT_DIR" "mustaavalkosta@opendesireproject.org:~/dl.opendesireproject.org/www/"
+    rsync -avvruO -e ssh --delete --timeout=600 "$LOCAL_BASE_DIR/$PROJECT_DIR" "mustaavalkosta@opendesireproject.org:~/dl.opendesireproject.org/www/"
     ssh mustaavalkosta@opendesireproject.org 'cd ~/ota-scanner/ && python scanner.py'
 
     # Basketbuild
