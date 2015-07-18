@@ -11,6 +11,9 @@ fi
 #export USE_CCACHE=1
 #export CCACHE_DIR=/home/mustaavalkosta/storage/ccache/$CM_VERSION
 
+# rsync retry count
+MAX_RETRIES=10
+
 # Android source tree root
 SOURCE_ROOT=/home/mustaavalkosta/storage/cm/$CM_VERSION/nightly
 
@@ -77,7 +80,13 @@ build()
     fi
 
     # Sync with opendesireproject.org
-    rsync -avvruO -e ssh --delete --timeout=600 "$LOCAL_BASE_DIR/$PROJECT_DIR" "mustaavalkosta@opendesireproject.org:~/dl.opendesireproject.org/www/"
+    i=0
+    false
+    while [ $? -ne 0 -a $i -lt $MAX_RETRIES ]
+    do
+        i=$[$i+1]
+        rsync -avvruO -e ssh --delete --timeout=120 "$LOCAL_BASE_DIR/$PROJECT_DIR" "mustaavalkosta@opendesireproject.org:~/dl.opendesireproject.org/www/"
+    done
     ssh mustaavalkosta@opendesireproject.org 'cd ~/ota-scanner/ && python scanner.py'
 
     # Basketbuild
