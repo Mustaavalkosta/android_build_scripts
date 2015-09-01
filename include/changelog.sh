@@ -28,3 +28,21 @@ generate_changelog()
         fi
     ' | cat >> "$CHANGELOG"
 }
+
+generate_revisions()
+{
+    if [ -z "$1" ] || [ -z "$2" ]
+    then
+        echo "Insufficient parameters. Usage: $FUNCNAME [revision file path] [revision timestamp]"
+        exit 0
+    fi
+
+    REVISION_FILE=$1
+
+    # Save new revision timestamp
+    echo "$2" > "$REVISION_FILE"
+
+    repo forall -pc '
+        echo $REPO_PATH:$REPO_LREV >> '"$REVISION_FILE"'
+    ' | cat
+}

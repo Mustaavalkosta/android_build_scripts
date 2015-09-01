@@ -62,6 +62,9 @@ build()
                 NEW_REVISIONS="$LOCAL_BASE_DIR/$PROJECT_DIR/snapshots/revisions/$ZIPNAME.txt"
                 CHANGELOG="$LOCAL_BASE_DIR/$PROJECT_DIR/snapshots/changelogs/$ZIPNAME.changelog"
                 generate_changelog "$LAST_REVISIONS" "$NEW_REVISIONS" "$CHANGELOG" "$REVISION_TIMESTAMP"
+            else
+                NEW_REVISIONS="$LOCAL_BASE_DIR/$PROJECT_DIR/snapshots/revisions/$ZIPNAME.txt"
+                generate_revisions "$NEW_REVISIONS" "$REVISION_TIMESTAMP"
             fi
         fi
 
