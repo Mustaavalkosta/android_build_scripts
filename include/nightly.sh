@@ -31,6 +31,25 @@ build()
     # Local dirs on codefi.re server
     local PROJECT_DIR="cm-$(echo $CM_VERSION |tr . -)-unofficial-$DEVICE"
 
+    # Main output dir
+    local OUTPUT_DIR="$LOCAL_BASE_DIR/$PROJECT_DIR/nightlies"
+
+    # Check if output dirs exist and create them if they don't
+    if [ ! -d "$OUTPUT_DIR" ]
+    then
+        mkdir -p "$OUTPUT_DIR"
+    fi
+
+    if [ ! -d "$OUTPUT_DIR/revisions" ]
+    then
+        mkdir -p "$OUTPUT_DIR/revisions"
+    fi
+
+    if [ ! -d "$OUTPUT_DIR/changelogs" ]
+    then
+        mkdir -p "$OUTPUT_DIR/changelogs"
+    fi
+
     # Run build
     cd "$SOURCE_ROOT"
     repo sync local_manifest # update manifest to bring in manifest changes first
@@ -51,28 +70,25 @@ build()
     # Check for build fail
     if [ $? -eq 0 ]
     then
-        cp -v "$SOURCE_ROOT"/out/target/product/$DEVICE/cm-$CM_VERSION-*-UNOFFICIAL-$DEVICE.zip* "$LOCAL_BASE_DIR/$PROJECT_DIR/nightlies/"
+        cp -v "$SOURCE_ROOT"/out/target/product/$DEVICE/cm-$CM_VERSION-*-UNOFFICIAL-$DEVICE.zip* "$OUTPUT_DIR"
 
         ZIPNAME=`find $SOURCE_ROOT/out/target/product/$DEVICE/cm-$CM_VERSION-*-UNOFFICIAL-$DEVICE.zip -exec basename {} .zip \;`
 
-        if [ -d "$LOCAL_BASE_DIR/$PROJECT_DIR/nightlies/revisions/" ]
+        LAST_REVISIONS=`find $OUTPUT_DIR/revisions -maxdepth 1 -type f | sort | tail -n 1`
+        if [ ! -z "$LAST_REVISIONS" ]
         then
-            LAST_REVISIONS=`find $LOCAL_BASE_DIR/$PROJECT_DIR/nightlies/revisions/ -maxdepth 1 -type f | sort | tail -n 1`
-            if [ ! -z "$LAST_REVISIONS" ]
-            then
-                NEW_REVISIONS="$LOCAL_BASE_DIR/$PROJECT_DIR/nightlies/revisions/$ZIPNAME.txt"
-                CHANGELOG="$LOCAL_BASE_DIR/$PROJECT_DIR/nightlies/changelogs/$ZIPNAME.changelog"
-                generate_changelog "$LAST_REVISIONS" "$NEW_REVISIONS" "$CHANGELOG" "$REVISION_TIMESTAMP"
-            else
-                NEW_REVISIONS="$LOCAL_BASE_DIR/$PROJECT_DIR/nightlies/revisions/$ZIPNAME.txt"
-                generate_revisions "$NEW_REVISIONS" "$REVISION_TIMESTAMP"
-            fi
+            NEW_REVISIONS="$OUTPUT_DIR/revisions/$ZIPNAME.txt"
+            CHANGELOG="$OUTPUT_DIR/changelogs/$ZIPNAME.changelog"
+            generate_changelog "$LAST_REVISIONS" "$NEW_REVISIONS" "$CHANGELOG" "$REVISION_TIMESTAMP"
+        else
+            NEW_REVISIONS="$OUTPUT_DIR/revisions/$ZIPNAME.txt"
+            generate_revisions "$NEW_REVISIONS" "$REVISION_TIMESTAMP"
         fi
 
         # Clean up
-        rm -v `find $LOCAL_BASE_DIR/$PROJECT_DIR/nightlies/ -maxdepth 1 -type f | sort -r | awk 'NR>14'`
-        rm -v `find $LOCAL_BASE_DIR/$PROJECT_DIR/nightlies/changelogs/ -maxdepth 1 -type f | sort -r | awk 'NR>7'`
-        rm -v `find $LOCAL_BASE_DIR/$PROJECT_DIR/nightlies/revisions/ -maxdepth 1 -type f | sort -r | awk 'NR>7'`
+        rm -v `find $OUTPUT_DIR -maxdepth 1 -type f | sort -r | awk 'NR>14'`
+        rm -v `find $OUTPUT_DIR/changelogs -maxdepth 1 -type f | sort -r | awk 'NR>7'`
+        rm -v `find $OUTPUT_DIR/revisions -maxdepth 1 -type f | sort -r | awk 'NR>7'`
 
         make clean
     else
