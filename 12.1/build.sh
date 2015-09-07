@@ -35,6 +35,7 @@ then
     source "$SCRIPT_DIR/include/nightly.sh"
     build "ace"
     build "saga"
+    build "aceopt"
 elif [ "$1" == "snapshot" ]
 then
     source "$SCRIPT_DIR/include/snapshot.sh"
