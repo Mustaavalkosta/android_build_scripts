@@ -60,6 +60,12 @@ build()
     cd "$SOURCE_ROOT"
     repo sync local_manifest # update manifest to bring in manifest changes first
     repo sync -j8 -d
+    # Check for sync error
+    if [ $? -ne 0 ]
+    then
+        exit 1
+    fi
+
     REVISION_TIMESTAMP=$(date -u +"%Y-%m-%d %R %Z")
     source build/envsetup.sh
     lunch cm_$DEVICE-userdebug
@@ -89,7 +95,7 @@ build()
         echo "##############################################################"
         echo "##                        BUILD FAILED                      ##"
         echo "##############################################################"
-        exit 0
+        exit 1
     fi
 
     # Sync with opendesireproject.org
