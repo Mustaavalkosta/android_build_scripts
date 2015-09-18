@@ -36,6 +36,7 @@ then
     build "ace"
     build "saga"
     build "aceopt"
+    build "sagaopt"
 elif [ "$1" == "snapshot" ]
 then
     source "$SCRIPT_DIR/include/snapshot.sh"
