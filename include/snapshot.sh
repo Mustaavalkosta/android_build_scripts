@@ -58,8 +58,8 @@ build()
 
     # Run build
     cd "$SOURCE_ROOT"
-    repo sync local_manifest # update manifest to bring in manifest changes first
-    repo sync -j8 -d
+    repo sync local_manifest --force-sync # update manifest to bring in manifest changes first
+    repo sync -j8 -d --force-sync
     # Check for sync error
     if [ $? -ne 0 ]
     then
