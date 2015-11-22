@@ -17,7 +17,7 @@ export USER=mustaavalkosta
 CM_VERSION="12.1"
 
 # Release name for release build
-RELEASE_NAME="YOG4P"
+RELEASE_NAME="YOG7D"
 
 # Base path for downloads
 LOCAL_BASE_DIR=/home/mustaavalkosta/downloads
