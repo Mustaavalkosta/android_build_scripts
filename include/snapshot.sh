@@ -38,7 +38,7 @@ build()
     local PROJECT_DIR="cm-$(echo $CM_VERSION |tr . -)-unofficial-$DEVICE"
 
     # Main output dir
-    local OUTPUT_DIR="$LOCAL_BASE_DIR/$PROJECT_DIR/nightlies"
+    local OUTPUT_DIR="$LOCAL_BASE_DIR/$PROJECT_DIR/snapshots"
 
     # Check if output dirs exist and create them if they don't
     if [ ! -d "$OUTPUT_DIR" ]
