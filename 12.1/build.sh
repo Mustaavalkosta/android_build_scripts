@@ -42,6 +42,8 @@ then
     source "$SCRIPT_DIR/include/snapshot.sh"
     build "ace"
     build "saga"
+    build "aceopt"
+    build "sagaopt"
 else
     echo "Invalid release type"
     exit 0
