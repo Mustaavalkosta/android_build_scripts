@@ -110,7 +110,7 @@ build()
     while [ $? -ne 0 -a $i -lt $MAX_RETRIES ]
     do
         i=$[$i+1]
-        rsync -avvruO -e ssh --delete --timeout=120 "$LOCAL_BASE_DIR/$PROJECT_DIR" "mustaavalkosta@opendesireproject.org:~/dl.opendesireproject.org/www/"
+        rsync -avvru -e ssh --delete --timeout=120 "$LOCAL_BASE_DIR/$PROJECT_DIR" "mustaavalkosta@opendesireproject.org:~/dl.opendesireproject.org/www/"
     done
     ssh mustaavalkosta@opendesireproject.org 'cd ~/ota-scanner/ && python scanner.py'
 
