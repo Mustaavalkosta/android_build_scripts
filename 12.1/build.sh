@@ -22,6 +22,9 @@ RELEASE_NAME="YOG7D"
 # Base path for downloads
 LOCAL_BASE_DIR=/home/mustaavalkosta/downloads
 
+# Max nightlies to keep on the server
+MAX_NIGHTLIES=7
+
 # Basketbuild login information
 # File format:
 # USERNAME:PASSWORD

@@ -92,9 +92,9 @@ build()
         fi
 
         # Clean up
-        rm -v `find $OUTPUT_DIR -maxdepth 1 -type f | sort -r | awk 'NR>14'`
-        rm -v `find $OUTPUT_DIR/changelogs -maxdepth 1 -type f | sort -r | awk 'NR>7'`
-        rm -v `find $OUTPUT_DIR/revisions -maxdepth 1 -type f | sort -r | awk 'NR>7'`
+        rm -v `find $OUTPUT_DIR -maxdepth 1 -type f | sort -r | awk "NR>($MAX_NIGHTLIES*2)"`
+        rm -v `find $OUTPUT_DIR/changelogs -maxdepth 1 -type f | sort -r | awk "NR>$MAX_NIGHTLIES"`
+        rm -v `find $OUTPUT_DIR/revisions -maxdepth 1 -type f | sort -r | awk "NR>$MAX_NIGHTLIES"`
 
         make clean
     else
