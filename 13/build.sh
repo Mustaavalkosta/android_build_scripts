@@ -13,6 +13,9 @@ SCRIPT_DIR="/home/mustaavalkosta/storage/build_scripts"
 # Cron doesn't get this without exporting it here.
 export USER=mustaavalkosta
 
+# Hack for missing libatomic.so.1
+export LD_LIBRARY_PATH=/mnt/nfs-fs1-nfshomes_storage/mustaavalkosta/cm/13.0/nightly/prebuilts/gcc/linux-x86/host/x86_64-linux-glibc2.15-4.8/x86_64-linux/lib64/
+
 # CM version
 CM_VERSION="13.0"
 
